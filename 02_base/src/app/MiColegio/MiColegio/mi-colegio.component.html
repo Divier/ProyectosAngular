@@ -1,0 +1,32 @@
+<div class="center">
+  <h1>Informacion de Mi Colegio</h1>
+</div>
+
+<div class="center">
+  <button (click)="getProfesores()">Ver Profesores</button>
+</div>
+
+<div>
+  <table>
+    <tr>
+      <td>
+        <select id="profesor" name="profesor" [(ngModel)]="profesorSel" (click)="getAsignaturasByProfesor()">
+          <option [ngValue]="objeto" *ngFor="let objeto of profesores">{{objeto.nombre}}</option>
+        </select>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div>
+  <table border="1">
+    <tr>
+      <td><h2>Asignatura</h2></td>
+      <td><h2>Estudiantes</h2></td>
+    </tr>
+    <tr *ngFor="let asg of asignaturas">
+      <td>{{asg.nombre}}</td>
+      <td><a href="#">Ver</a></td>
+    </tr>
+  </table>
+</div>

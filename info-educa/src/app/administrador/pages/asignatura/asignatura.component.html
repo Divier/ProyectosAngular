@@ -1,0 +1,134 @@
+<app-message *ngIf="showMessage" [messageType]="messageType" (hideMessageEvent)="hideMessage( $event )"></app-message>
+
+<div class="animate__animated animate__bounce text-layout">
+  <p-fieldset legend="Asignaturas" [toggleable]="true" class="animate__animated animate__fadeInDown">
+    <p-tabView>
+      <p-tabPanel header="Registrar Asignatura" leftIcon="pi pi-save" [disabled]="isDisabledRegistrar"
+        [selected]="isSelectedViewRegistrar">
+        <div class="formgrid grid">
+          <div class="field sm:col-12 md:col-6 lg:col-3">
+            <label for="idAsg">ID Asignatura</label>
+            <p-inputNumber [(ngModel)]="idAsg" inputId="idAsg" [style]="{'width':'100%'}"></p-inputNumber>
+          </div>
+          <div class="field sm:col-12 md:col-6 lg:col-3">
+            <label for="nombre">Nombre</label>
+            <input [(ngModel)]="nombre" id="nombre" type="text" pInputText class="inputfield w-full" />
+          </div>
+          <div class="field sm:col-12 md:col-6 lg:col-3">
+            <label for="fechaDesde">Fecha Inicio Curso</label>
+            <p-calendar [(ngModel)]="fechaDesde" [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true"
+              yearRange="2000:2050" inputId="fechaDesde" placeholder="dd/mm/yyyy" dateFormat="dd/mm/yy"
+              [showTime]="true" hourFormat="24" [showSeconds]="true" [style]="{'width':'100%'}"></p-calendar>
+          </div>
+          <div class="field sm:col-12 md:col-6 lg:col-3">
+            <label for="fechaHasta">Fecha Terminacion Curso</label>
+            <p-calendar [(ngModel)]="fechaHasta" [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true"
+              yearRange="2000:2050" inputId="fechaHasta" placeholder="dd/mm/yyyy" dateFormat="dd/mm/yy"
+              [showTime]="true" hourFormat="24" [showSeconds]="true" [style]="{'width':'100%'}"></p-calendar>
+          </div>
+          <div class="field col-12 flex justify-content-center">
+            <button (click)="saveAsignatura()" pButton type="button" label="Registrar Asignatura" icon="pi pi-save"
+              class="p-button"></button>
+          </div>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel header="Modificar Asignatura" leftIcon="pi pi-pencil" [disabled]="isDisabledModificar"
+        [selected]="isSelectedViewModificar">
+        <div class="formgrid grid">
+          <div class="field sm:col-12 md:col-6 lg:col-3">
+            <label for="idAsgM">ID Asignatura</label>
+            <p-inputNumber [(ngModel)]="idAsgM" inputId="idAsgM" [style]="{'width':'100%'}" [disabled]="true">
+            </p-inputNumber>
+          </div>
+          <div class="field sm:col-12 md:col-6 lg:col-3">
+            <label for="nombreM">Nombre</label>
+            <input [(ngModel)]="nombreM" id="nombreM" type="text" pInputText class="inputfield w-full" />
+          </div>
+          <div class="field sm:col-12 md:col-6 lg:col-3">
+            <label for="fechaDesdeM">Fecha Inicio Curso</label>
+            <p-calendar [(ngModel)]="fechaDesdeM" [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true"
+              yearRange="2000:2050" inputId="fechaDesdeM" placeholder="dd/mm/yyyy" dateFormat="dd/mm/yy"
+              [showTime]="true" hourFormat="24" [showSeconds]="true" [style]="{'width':'100%'}"></p-calendar>
+          </div>
+          <div class="field sm:col-12 md:col-6 lg:col-3">
+            <label for="fechaHastaM">Fecha Terminacion Curso</label>
+            <p-calendar [(ngModel)]="fechaHastaM" [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true"
+              yearRange="2000:2050" inputId="fechaHastaM" placeholder="dd/mm/yyyy" dateFormat="dd/mm/yy"
+              [showTime]="true" hourFormat="24" [showSeconds]="true" [style]="{'width':'100%'}"></p-calendar>
+          </div>
+          <div class="field col-6 flex justify-content-end">
+            <button (click)="cancelar()" pButton type="button" label="Cancelar" icon="pi pi-times"
+              class="p-button"></button>
+          </div>
+          <div class="field col-6 flex justify-content-left">
+            <button (click)="editAsignatura()" pButton type="button" label="Modificar Asignatura" icon="pi pi-pencil"
+              class="p-button"></button>
+          </div>
+        </div>
+      </p-tabPanel>
+    </p-tabView>
+  </p-fieldset>
+
+  <div *ngIf="asignaturas.length > 0 else viewMessage" class="grid">
+    <div class="flex justify-content-left mt-5 box shadow-7" style="overflow-x : auto">
+      <p-table [value]="asignaturas" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+        [rowsPerPageOptions]="[5,10,25,50,100]" [scrollable]="false" scrollHeight="250px"
+        styleClass="p-datatable-sm p-datatable-gridlines">
+        <!--[lazy]="true" (onLazyLoad)="loadTable($event)">-->
+        <ng-template pTemplate="colgroup" let-columns>
+          <colgroup>
+            <col style="width:100px">
+            <col style="width:200px">
+            <col style="width:150px">
+            <col style="width:150px">
+            <col style="width:50px">
+            <col style="width:50px">
+          </colgroup>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="idAsg" [ngStyle]="{'text-align': 'center'}">ID
+              Asignatura <p-sortIcon field="idAsg"></p-sortIcon>
+            </th>
+            <th pSortableColumn="nombre" [ngStyle]="{'text-align': 'center'}">Nombre
+              <p-sortIcon field="nombre"></p-sortIcon>
+            </th>
+            <th pSortableColumn="fechaDesde" [ngStyle]="{'text-align': 'center'}">
+              Fecha Inicio Asignatura <p-sortIcon field="fechaDesde"></p-sortIcon>
+            </th>
+            <th pSortableColumn="fechaHasta" [ngStyle]="{'text-align': 'center'}">
+              Fecha Termiancion Asignatura <p-sortIcon field="fechaHasta"></p-sortIcon>
+            </th>
+            <th [ngStyle]="{'text-align': 'center'}"></th>
+            <th [ngStyle]="{'text-align': 'center'}"></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-asignatura>
+          <tr>
+            <td class="ajust-content-column-table" [ngStyle]="{'text-align': 'center'}">{{asignatura.idAsg}}
+            </td>
+            <td class="ajust-content-column-table">{{asignatura.nombre |
+              titlecase}}</td>
+            <td class="ajust-content-column-table" [ngStyle]="{'text-align': 'center'}">
+              {{asignatura.fechaDesde | date:'dd/MM/yyyy'}}</td>
+            <td class="ajust-content-column-table" [ngStyle]="{'text-align': 'center'}">
+              {{asignatura.fechaHasta | date:'dd/MM/yyyy'}}</td>
+            <td [ngStyle]="{'text-align': 'center'}">
+              <button type="button" pButton pRipple icon="pi pi-pencil" (click)="preEditAsignatura(asignatura)"
+                pTooltip="Modificar Asignatura" tooltipPosition="top"></button>
+            </td>
+            <td [ngStyle]="{'text-align': 'center'}">
+              <button type="button" pButton pRipple icon="pi pi-times"
+                (click)="preDeleteAsignatura( $event, asignatura)" pTooltip="Eliminar Asignatura" tooltipPosition="top"
+                [ngStyle]="{backgroundColor:'var(--my-var, FireBrick)'}"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+  <p-confirmPopup></p-confirmPopup>
+  <ng-template #viewMessage><small><strong>No se encontraron registros
+        ...</strong></small></ng-template>
+</div>

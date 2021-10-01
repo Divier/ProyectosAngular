@@ -1,0 +1,62 @@
+<div class="d-flex align-items-center justify-content-center">
+  <div class="row p-3">
+    <div class="col">
+      <form (ngSubmit)="verProfesores()">
+        <div class="row p-2">
+          <div class="col">
+            <input name="idProfesor" type="number" placeholder="ID Profesor" [(ngModel)]="profesorPC.idPrf" />
+          </div>
+        </div>
+        <div class="row p-2">
+          <div class="col">
+            <input name="profesor" type="text" placeholder="Nombre Profesor" [(ngModel)]="profesorPC.nombre" />
+          </div>
+        </div>
+        <div class="row p-2">
+          <div class="col">
+            <button>Ver Profesores</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<hr class="text-white" />
+
+<div *ngIf="profesoresPC.length > 0; else noExistenRegistrosProfesores" class="animate__animated animate__zoomIn">
+  <div class="col-md-2 col-md-9 col-md-8">
+    <div class="row p-2">
+      <div class="col">
+        <h4>Id Profesor</h4>
+      </div>
+      <div class="col">
+        <h4>Nombre Profesor</h4>
+      </div>
+      <div class="col">
+        <h4>Ver Asignaturas</h4>
+      </div>
+    </div>
+  </div>
+
+  <div *ngFor="let profesor of profesoresPC" class="col-md-2 col-md-9 col-md-8">
+    <div class="row p-2">
+      <div class="col">
+        {{profesor.idPrf}}
+      </div>
+      <div class="col">
+        {{profesor.nombre}}
+      </div>
+      <div class="col">
+        <a href="#" (click)="verAsiganturasByProfesor(profesor.idPrf!)">Ver</a>
+      </div>
+    </div>
+  </div>
+
+  <hr class="text-white" />
+  <app-asignaturas [idPrfAC]="idPrfPCSeleccionado"></app-asignaturas>
+</div>
+
+<ng-template #noExistenRegistrosProfesores>
+  <h5>No existen profesores registrados</h5>
+</ng-template>

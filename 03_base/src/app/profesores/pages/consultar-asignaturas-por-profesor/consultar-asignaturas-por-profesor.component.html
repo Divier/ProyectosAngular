@@ -1,0 +1,30 @@
+<h3>Asignaturas</h3>
+<hr/>
+<div class="row">
+  <div class="col">
+    <app-profesor-input (onProfesorId) = "buscar($event)" placeholder="Buscar Asignatura..."></app-profesor-input>
+  </div>
+</div>
+<hr/>
+<div *ngIf="existError" class="alert alert-danger">
+  No se encontró informacion del profesor consultado...
+</div>
+
+<div *ngIf="!existError && asignaturas.length > 0" class="row">
+  <div class="col">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>ID ASIGNATURA</th>
+          <th>NOMBRE ASIGNATURA</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let asignatura of asignaturas; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{asignatura.nombre}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

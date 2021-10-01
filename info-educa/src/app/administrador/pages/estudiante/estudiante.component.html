@@ -1,0 +1,116 @@
+<app-message *ngIf="showMessage" [messageType]="messageType" (hideMessageEvent)="hideMessage( $event )"></app-message>
+
+<div class="animate__animated animate__bounce text-layout">
+  <p-fieldset legend="Estudiantes" [toggleable]="true" class="animate__animated animate__fadeInDown">
+    <p-tabView>
+      <p-tabPanel header="Registrar Estudiante" leftIcon="pi pi-save" [disabled]="isDisabledRegistrar"
+        [selected]="isSelectedViewRegistrar">
+        <div class="formgrid grid">
+          <div class="field sm:col-12 md:col-4 lg:col-4">
+            <label for="idEst">ID Estudiante</label>
+            <p-inputNumber [(ngModel)]="idEst" inputId="idEst" [style]="{'width':'100%'}"></p-inputNumber>
+          </div>
+          <div class="field sm:col-12 md:col-4 lg:col-4">
+            <label for="nombre">Nombre</label>
+            <input [(ngModel)]="nombre" id="nombre" type="text" pInputText class="inputfield w-full" />
+          </div>
+          <div class="field sm:col-12 md:col-4 lg:col-4">
+            <label for="fechaNacimiento">Fecha De Nacimiento</label>
+            <p-calendar [(ngModel)]="fechaNacimiento" [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true"
+              yearRange="2000:2050" inputId="fechaNacimiento" placeholder="dd/mm/yyyy" dateFormat="dd/mm/yy"
+              [style]="{'width':'100%'}"></p-calendar>
+          </div>
+          <div class="field col-12 flex justify-content-center">
+            <button (click)="saveEstudiante()" pButton type="button" label="Registrar Estudiante" icon="pi pi-save"
+              class="p-button"></button>
+          </div>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel header="Modificar Estudiante" leftIcon="pi pi-pencil" [disabled]="isDisabledModificar"
+        [selected]="isSelectedViewModificar">
+        <div class="formgrid grid">
+          <div class="field sm:col-12 md:col-4 lg:col-4">
+            <label for="idEstM">ID Estudiante</label>
+            <p-inputNumber [(ngModel)]="idEstM" inputId="idEstM" [style]="{'width':'100%'}" [disabled]="true">
+            </p-inputNumber>
+          </div>
+          <div class="field sm:col-12 md:col-4 lg:col-4">
+            <label for="nombreM">Nombre</label>
+            <input [(ngModel)]="nombreM" id="nombreM" type="text" pInputText class="inputfield w-full" />
+          </div>
+          <div class="field sm:col-12 md:col-4 lg:col-4">
+            <label for="fechaNacimientoM">Fecha De Nacimiento</label>
+            <p-calendar [(ngModel)]="fechaNacimientoM" [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true"
+              yearRange="2000:2050" inputId="fechaNacimientoM" placeholder="dd/mm/yyyy" dateFormat="dd/mm/yy"
+              [style]="{'width':'100%'}"></p-calendar>
+          </div>
+          <div class="field col-6 flex justify-content-end">
+            <button (click)="cancelar()" pButton type="button" label="Cancelar" icon="pi pi-times"
+              class="p-button"></button>
+          </div>
+          <div class="field col-6 flex justify-content-left">
+            <button (click)="editEstudiante()" pButton type="button" label="Modificar Estudiante" icon="pi pi-pencil"
+              class="p-button"></button>
+          </div>
+        </div>
+      </p-tabPanel>
+    </p-tabView>
+  </p-fieldset>
+
+  <div *ngIf="estudiantes.length > 0 else viewMessage" class="grid">
+    <div class="flex justify-content-left mt-5 box shadow-7" style="overflow-x : auto">
+      <p-table [value]="estudiantes" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+        [rowsPerPageOptions]="[5,10,25,50,100]" [scrollable]="false" scrollHeight="250px"
+        styleClass="p-datatable-sm p-datatable-gridlines">
+        <!--[lazy]="true" (onLazyLoad)="loadTable($event)">-->
+        <ng-template pTemplate="colgroup" let-columns>
+          <colgroup>
+            <col style="width:100px">
+            <col style="width:200px">
+            <col style="width:150px">
+            <col style="width:50px">
+            <col style="width:50px">
+          </colgroup>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="idEst" [ngStyle]="{'text-align': 'center'}">ID
+              Estudiante <p-sortIcon field="idEst"></p-sortIcon>
+            </th>
+            <th pSortableColumn="nombre" [ngStyle]="{'text-align': 'center'}">Nombre
+              <p-sortIcon field="nombre"></p-sortIcon>
+            </th>
+            <th pSortableColumn="fechaNacimiento" [ngStyle]="{'text-align': 'center'}">
+              Fecha De Nacimiento <p-sortIcon field="fechaNacimiento"></p-sortIcon>
+            </th>
+            <th [ngStyle]="{'text-align': 'center'}"></th>
+            <th [ngStyle]="{'text-align': 'center'}"></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-estudiante>
+          <tr>
+            <td class="ajust-content-column-table" [ngStyle]="{'text-align': 'center'}">{{estudiante.idEst}}
+            </td>
+            <td class="ajust-content-column-table">{{estudiante.nombre |
+              titlecase}}</td>
+            <td class="ajust-content-column-table" [ngStyle]="{'text-align': 'center'}">
+              {{estudiante.fechaNacimiento | date:'dd/MM/yyyy'}}</td>
+            <td [ngStyle]="{'text-align': 'center'}">
+              <button type="button" pButton pRipple icon="pi pi-pencil" (click)="preEditEstudiante(estudiante)"
+                pTooltip="Modificar Estudiante" tooltipPosition="top"></button>
+            </td>
+            <td [ngStyle]="{'text-align': 'center'}">
+              <button type="button" pButton pRipple icon="pi pi-times"
+                (click)="preDeleteEstudiante( $event, estudiante)" pTooltip="Eliminar Estudiante" tooltipPosition="top"
+                [ngStyle]="{backgroundColor:'var(--my-var, FireBrick)'}"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+  <p-confirmPopup></p-confirmPopup>
+  <ng-template #viewMessage><small><strong>No se encontraron registros
+        ...</strong></small></ng-template>
+</div>

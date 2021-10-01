@@ -1,0 +1,26 @@
+<p-sidebar [(visible)]="viewSideBar" [showCloseIcon]="false" [modal]=true [dismissible]=true>
+  <p-toolbar>
+    <div class="p-toolbar-group-left">
+      <span>Opciones</span>
+    </div>
+    <div class="p-toolbar-group-right">
+      <p-button type="text" (click)="viewSideBar = false" icon="pi pi-bars"></p-button>
+    </div>
+  </p-toolbar>
+  <div class="pt-2">
+    <p-listbox [options]="groupOptions" [(ngModel)]="selected" [filter]="true" [group]="true" (onClick)="nav()">
+      <ng-template let-option pTemplate="item">
+        <span><i class="pi pi-cog pl-3 pr-2"></i>{{option.label}}</span>
+      </ng-template>
+    </p-listbox>
+  </div>
+</p-sidebar>
+
+<p-toolbar>
+  <div class="p-toolbar-group-left">
+    <p-button type="text" (click)="viewSideBar = true" icon="pi pi-bars"></p-button>
+  </div>
+</p-toolbar>
+<div class="pt-2">
+  <router-outlet></router-outlet>
+</div>

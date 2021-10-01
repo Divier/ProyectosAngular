@@ -1,0 +1,3 @@
+<div [class]="(msgs.length > 0) ? 'animate__animated animate__fadeInDown' : 'animate__animated animate__fadeOutDown'">
+  <p-messages [(value)]="msgs" [enableService]="false" [closable]="true"></p-messages>
+</div>

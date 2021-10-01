@@ -1,0 +1,114 @@
+<app-message *ngIf="showMessage" [messageType]="messageType" (hideMessageEvent)="hideMessage( $event )"></app-message>
+
+<div class="animate__animated animate__bounce text-layout">
+  <p-fieldset legend="Horarios" [toggleable]="true" class="animate__animated animate__fadeInDown">
+    <p-tabView>
+      <p-tabPanel header="Registrar Horario" leftIcon="pi pi-save" [disabled]="isDisabledRegistrar"
+        [selected]="isSelectedViewRegistrar">
+        <div class="formgrid grid">
+          <div class="field sm:col-12 md:col-4 lg:col-4">
+            <label for="idHor">ID Horario</label>
+            <p-inputNumber [(ngModel)]="idHor" inputId="idHor" [style]="{'width':'100%'}"></p-inputNumber>
+          </div>
+          <div class="field sm:col-12 md:col-4 lg:col-4">
+            <label for="dia">Dia</label>
+            <input [(ngModel)]="dia" id="dia" type="text" pInputText class="inputfield w-full" />
+          </div>
+          <div class="field sm:col-12 md:col-4 lg:col-4">
+            <label for="hora">Hora</label>
+            <p-calendar [(ngModel)]="hora" [showIcon]="true" inputId="hora" placeholder="hh:mm:ss" [timeOnly]="true"
+              [showSeconds]="true" icon="pi pi-clock" [style]="{'width':'100%'}"></p-calendar>
+          </div>
+          <div class="field col-12 flex justify-content-center">
+            <button (click)="saveHorario()" pButton type="button" label="Registrar Horario" icon="pi pi-save"
+              class="p-button"></button>
+          </div>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel header="Modificar Horario" leftIcon="pi pi-pencil" [disabled]="isDisabledModificar"
+        [selected]="isSelectedViewModificar">
+        <div class="formgrid grid">
+          <div class="field sm:col-12 md:col-4 lg:col-4">
+            <label for="idHorM">ID Horario</label>
+            <p-inputNumber [(ngModel)]="idHorM" inputId="idHorM" [style]="{'width':'100%'}" [disabled]="true">
+            </p-inputNumber>
+          </div>
+          <div class="field sm:col-12 md:col-4 lg:col-4">
+            <label for="diaM">Dia</label>
+            <input [(ngModel)]="diaM" id="diaM" type="text" pInputText class="inputfield w-full" />
+          </div>
+          <div class="field sm:col-12 md:col-4 lg:col-4">
+            <label for="horaM">Hora</label>
+            <p-calendar [(ngModel)]="horaM" [showIcon]="true" inputId="horaM" placeholder="hh:mm:ss" [timeOnly]="true"
+              [showSeconds]="true" icon="pi pi-clock" [style]="{'width':'100%'}"></p-calendar>
+          </div>
+          <div class="field col-6 flex justify-content-end">
+            <button (click)="cancelar()" pButton type="button" label="Cancelar" icon="pi pi-times"
+              class="p-button"></button>
+          </div>
+          <div class="field col-6 flex justify-content-left">
+            <button (click)="editHorario()" pButton type="button" label="Modificar Horario" icon="pi pi-pencil"
+              class="p-button"></button>
+          </div>
+        </div>
+      </p-tabPanel>
+    </p-tabView>
+  </p-fieldset>
+
+  <div *ngIf="horarios.length > 0 else viewMessage" class="grid">
+    <div class="flex justify-content-left mt-5 box shadow-7" style="overflow-x : auto">
+      <p-table [value]="horarios" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+        [rowsPerPageOptions]="[5,10,25,50,100]" [scrollable]="false" scrollHeight="250px"
+        styleClass="p-datatable-sm p-datatable-gridlines">
+        <!--[lazy]="true" (onLazyLoad)="loadTable($event)">-->
+        <ng-template pTemplate="colgroup" let-columns>
+          <colgroup>
+            <col style="width:100px">
+            <col style="width:100px">
+            <col style="width:100px">
+            <col style="width:50px">
+            <col style="width:50px">
+          </colgroup>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="idHor" [ngStyle]="{'text-align': 'center'}">ID
+              Horario <p-sortIcon field="idHor"></p-sortIcon>
+            </th>
+            <th pSortableColumn="dia" [ngStyle]="{'text-align': 'center'}">Dia
+              <p-sortIcon field="dia"></p-sortIcon>
+            </th>
+            <th pSortableColumn="hora" [ngStyle]="{'text-align': 'center'}">Hora
+              <p-sortIcon field="hora"></p-sortIcon>
+            </th>
+            <th [ngStyle]="{'text-align': 'center'}"></th>
+            <th [ngStyle]="{'text-align': 'center'}"></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-horario>
+          <tr>
+            <td class="ajust-content-column-table" [ngStyle]="{'text-align': 'center'}">{{horario.idHor}}
+            </td>
+            <td class="ajust-content-column-table">{{horario.dia |
+              titlecase}}</td>
+            <td class="ajust-content-column-table">{{horario.hora |
+              date:'HH:mm:ss'}}</td>
+            <td [ngStyle]="{'text-align': 'center'}">
+              <button type="button" pButton pRipple icon="pi pi-pencil" (click)="preEditHorario(horario)"
+                pTooltip="Modificar Horario" tooltipPosition="top"></button>
+            </td>
+            <td [ngStyle]="{'text-align': 'center'}">
+              <button type="button" pButton pRipple icon="pi pi-times" (click)="preDeleteHorario( $event, horario)"
+                pTooltip="Eliminar Horario" tooltipPosition="top"
+                [ngStyle]="{backgroundColor:'var(--my-var, FireBrick)'}"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+  <p-confirmPopup></p-confirmPopup>
+  <ng-template #viewMessage><small><strong>No se encontraron registros
+        ...</strong></small></ng-template>
+</div>

@@ -1,0 +1,11 @@
+<div class="d-flex">
+  <div class="bg-dark border-right p-2" id="header">
+    <h2 class="text-light text-center">Mi Colegio</h2>
+    <hr class="text-white" />
+  </div>
+</div>
+<div class="d-flex">
+  <app-sidebar></app-sidebar>
+  <app-profesores class="container" [profesoresDataPC]="profesoresDataMP" (onProfesorPC)="verProfesores( $event )"></app-profesores>
+  <app-cursos></app-cursos>
+</div>

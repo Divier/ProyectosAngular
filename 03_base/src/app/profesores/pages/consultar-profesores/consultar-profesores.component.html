@@ -1,0 +1,30 @@
+<h3>Profesores</h3>
+<hr/>
+<div class="row">
+  <app-profesor-input (onProfesorId) = "buscar($event)" placeholder="Buscar Profesor..."></app-profesor-input>
+</div>
+<hr/>
+<div *ngIf="existError" class="alert alert-danger">
+  No se encontró el profesor consultado...
+</div>
+
+<div *ngIf="!existError && profesores.length > 0" class="row">
+  <div class="col">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>ID PROFESOR</th>
+          <th>NOMBRE PROFESOR</th>
+          <th>ASIGNATURAS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let profesor of profesores; let i=index" [class]="i % 2 == 0 ? 'bg-secondary text-white' : 'bg-light text-dark'">
+          <td>{{profesor.idPrf}}</td>
+          <td>{{profesor.nombre}}</td>
+          <td><a [routerLink]="['/asignaturasxprofesor', profesor.idPrf]" class="btn btn-outline-primary">VER</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

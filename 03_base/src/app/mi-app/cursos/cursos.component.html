@@ -1,0 +1,8 @@
+<h5>Buscar Curso</h5>
+<input type="text" class="form-control" placeholder="Buscar cursos..." (keyup.enter)=buscar() #txtBC/>
+
+<ul>
+  <li *ngFor="let profe of profesores">
+    {{profe}}
+  </li>
+</ul>
