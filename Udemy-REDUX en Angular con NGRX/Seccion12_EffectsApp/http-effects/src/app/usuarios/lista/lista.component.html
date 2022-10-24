@@ -1,0 +1,14 @@
+<div class="row row-cols-1 row-cols-md-3 g-4">
+  <div class="card mx-2" style="width: 12rem;" *ngFor="let usuario of usuarios">
+    <img [src]="usuario.avatar" class="card-img-top">
+    <div class="card-body">
+      <h5 class="card-title"> {{ usuario.first_name }} {{ usuario.last_name }} </h5>
+      <p class="card-text"> This content is a little bit longer.</p>
+      <p class="card-text">
+        <span class="text-muted">
+          ID: {{ usuario.id }}
+        </span>
+      </p>
+    </div>
+  </div>
+</div>

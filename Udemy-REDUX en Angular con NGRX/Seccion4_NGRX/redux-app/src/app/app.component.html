@@ -1,0 +1,20 @@
+<div class="row text-center">
+  <div class="col">
+    <h1>Contador</h1>
+    <h2>{{ contador }}</h2>
+  </div>
+</div>
+
+<div class="row text-center">
+  <div class="col">
+    <button class="btn btn-primary" (click)="incrementar(1)">Incrementar</button>
+    <button class="btn btn-info" (click)="decrementar(1)">Decrementar</button>
+  </div>
+</div>
+
+<div class="row text-center">
+  <div class="col">
+    <!-- <app-hijo [contador]="contador" (cambioContador)="contador = $event"></app-hijo> -->
+    <app-hijo></app-hijo>
+  </div>
+</div>
